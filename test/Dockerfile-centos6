@@ -26,4 +26,6 @@ RUN ansible-playbook-wrapper
 # test phase
 #
 
-CMD  service monit start  &&  /usr/bin/monit status
+VOLUME ["/data"]
+
+CMD  service monit start  &&  /usr/bin/monit status > /data/result-debian7

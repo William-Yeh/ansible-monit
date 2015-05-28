@@ -26,5 +26,7 @@ RUN ansible-playbook-wrapper --extra-vars "monit_use_service=False"
 # test phase
 #
 
-CMD  /usr/bin/monit -c /etc/monitrc  &&  /usr/bin/monit status
-#CMD  service monit start  &&  /usr/bin/monit status
+VOLUME ["/data"]
+
+CMD  /usr/bin/monit -c /etc/monitrc  &&  /usr/bin/monit status > /data/result-debian7
+#CMD  service monit start  &&  /usr/bin/monit status > /data/result-debian7
