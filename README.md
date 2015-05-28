@@ -2,12 +2,13 @@
 williamyeh.monit for Ansible Galaxy
 ============
 
+[![Build Status](https://travis-ci.org/William-Yeh/ansible-monit.svg?branch=master)](https://travis-ci.org/William-Yeh/ansible-monit)
 
 
 
 ## Summary
 
-Role name in Ansible Galaxy: **[williamyeh.monit](https://galaxy.ansible.com/list#/roles/XXXX)**
+Role name in Ansible Galaxy: **[williamyeh.monit](https://galaxy.ansible.com/list#/roles/3955)**
 
 This Ansible role has the following features for Monit:
 
