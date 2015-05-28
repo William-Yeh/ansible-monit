@@ -24,9 +24,14 @@ monit_versions = []
 def enumerate_versions():
     global monit_versions
 
-    # ignore [SSL: CERTIFICATE_VERIFY_FAILED] error;
-    # @see http://stackoverflow.com/a/28052583/714426
-    f = urllib.urlopen(MONIT_DIST_LINK, context = ssl._create_unverified_context())
+    f = None
+    try:
+        f = urllib.urlopen(MONIT_DIST_LINK)
+    except IOError:
+        # ignore [SSL: CERTIFICATE_VERIFY_FAILED] error;
+        # @see http://stackoverflow.com/a/28052583/714426
+        context = ssl._create_unverified_context()
+        f = urllib.urlopen(MONIT_DIST_LINK, context=context)
 
     content = f.read()
     for line in content.splitlines():
