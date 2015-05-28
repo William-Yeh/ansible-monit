@@ -28,4 +28,4 @@ RUN ansible-playbook-wrapper
 
 VOLUME ["/data"]
 
-CMD  service monit start  &&  /usr/bin/monit status > /data/result-debian7
+CMD  service monit start  &&  /usr/bin/monit status > /data/result-centos6

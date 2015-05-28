@@ -28,5 +28,5 @@ RUN ansible-playbook-wrapper --extra-vars "monit_use_service=False"
 
 VOLUME ["/data"]
 
-CMD  /usr/bin/monit -c /etc/monitrc  &&  /usr/bin/monit status > /data/result-debian7
-#CMD  service monit start  &&  /usr/bin/monit status > /data/result-debian7
+CMD  /usr/bin/monit -c /etc/monitrc  &&  /usr/bin/monit status > /data/result-centos7
+#CMD  service monit start  &&  /usr/bin/monit status > /data/result-centos7
