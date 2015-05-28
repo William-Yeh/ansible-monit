@@ -1,0 +1,31 @@
+---
+# file: handlers/main.yml
+#
+
+- name: restart monit
+  service: name=monit state=restarted
+  when: monit_use_service|bool
+#
+#- name: restart monit
+#  command: /usr/bin/env monit -s reload
+#  when: not monit_use_service|bool
+
+
+
+- name: reload monit
+  service: name=monit state=reloaded
+  when: monit_use_service|bool
+#
+#- name: reload monit
+#  command: /usr/bin/env monit -s reload
+#  when: not monit_use_service|bool
+
+
+
+- name: stop monit
+  service: name=monit state=stopped
+  when: monit_use_service|bool
+#
+#- name: stop monit
+#  command: /usr/bin/env monit -s stop
+#  when: not monit_use_service|bool

@@ -1,0 +1,43 @@
+---
+# file: tasks/install.yml
+#
+# Install monit from source code.
+#
+# @see https://mmonit.com/wiki/Monit/Installation
+#
+
+
+- name: set internal variables for convenience
+  set_fact:
+    monit_tarball_file: "monit-{{ monit_version }}-linux-x64.tar.gz"
+
+
+- name: download tarball
+  get_url: url="https://mmonit.com/monit/dist/binary/{{ monit_version }}/{{ monit_tarball_file }}"  dest="{{ monit_download_path }}/"
+
+- name: uutar tarball
+  unarchive:
+    src: "{{ monit_download_path }}/{{ monit_tarball_file }}"
+    dest: "{{ monit_download_path }}"
+    copy: no
+
+- name: install executable
+  command: cp  "{{ monit_download_path }}/monit-{{ monit_version }}/bin/monit"  "{{ monit_install_path }}/monit"
+
+
+
+
+- name: copy INIT script to server
+  template: src="../templates/monit.sysvinit.debian.sh.j2"  dest="/etc/init.d/monit"  mode="a+x"
+  when: ansible_os_family == "Debian"
+
+- name: copy INIT script to server
+  template: src="../templates/monit.sysvinit.redhat.sh.j2"  dest="/etc/init.d/monit"  mode="a+x"
+  when: ansible_os_family == "RedHat"
+
+- name: set INIT status
+  service: name=monit enabled=yes
+
+- name: set monit variable for Debian/Ubuntu
+  copy: src="../files/etc-default-monit"  dest=/etc/default/monit
+  when: ansible_os_family == "Debian"

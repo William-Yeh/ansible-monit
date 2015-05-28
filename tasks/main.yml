@@ -1,0 +1,83 @@
+---
+# file: tasks/main.yml
+# Top-level installer for Monit.
+#
+# @see https://mmonit.com/wiki/Monit/Installation
+#
+
+- name: set role variables, if necessary
+  include: set-role-variables.yml
+
+
+- name: install libselinux-python binary for Ansible to work
+  yum: name=libselinux-python state=present
+  when: ansible_pkg_mgr == "yum"
+
+#- name: delegate to SELINUX handling subtask, if necessary
+#  include: set-selinux.yml
+#  when: nginx_in_selinux is defined and nginx_in_selinux == true
+
+
+
+
+
+
+- name: copy scripts to server
+  copy: src="../files/{{ item }}"  dest="/tmp/"  mode="a+x"
+  with_items:
+    - check-latest-monit.py
+    - check-monit.sh
+
+
+- name: query the latest version of official binary distribution
+  shell: LC_ALL="en_US.UTF-8"  /tmp/check-latest-monit.py
+  changed_when: false
+  register: monit_distribution
+
+- name: store the value of latest monit version
+  set_fact:
+    monit_version: "{{ (monit_distribution.stdout|from_json).version }}"
+  when: (monit_distribution.stdout|from_json).ok
+
+
+
+- name: check if specific version of monit has been installed
+  shell: LC_ALL="en_US.UTF-8"  /tmp/check-monit.sh  {{ monit_version }}
+  ignore_errors: true
+  changed_when: false
+  register: monit_is_installed
+
+- name: install monit
+  include: install.yml
+  when: (monit_is_installed.stdout|from_json).not_found
+  notify:
+    - restart monit
+
+
+
+- name: mkdir for config and data
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ monit_config_path }}"
+    - "{{ monit_db_path }}"
+
+
+- name: copy monit main config file from role's default, if necessary
+  template: src=../templates/monitrc.j2  dest=/etc/monitrc  mode="0700"
+  when: monit_conf_main is not defined
+  notify:
+    - restart monit
+
+- name: copy monit main config file from playbook's, if any
+  template: src={{ playbook_dir }}/{{ monit_conf_main }}  dest=/etc/monitrc  mode="0700"
+  when: monit_conf_main is defined
+  notify:
+    - restart monit
+
+- name: copy other monit config files from playbook's, if any
+  template: src={{ playbook_dir }}/{{ item.value.src }}  dest={{ monit_config_path }}/{{ item.value.dest }}
+  with_dict: monit_conf_others | default({})
+  notify:
+    - restart monit

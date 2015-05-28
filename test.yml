@@ -1,0 +1,14 @@
+- hosts: all
+  sudo: True
+  tasks:
+    - include: 'tasks/main.yml'
+  handlers:
+    - include: 'handlers/main.yml'
+  vars_files:
+    - 'defaults/main.yml'
+
+  vars:
+  #  monit_conf_others:
+  #    conf_template_for_app_1:
+  #      src: "sshd.conf.j2"
+  #      dest: sshd

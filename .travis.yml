@@ -1,0 +1,21 @@
+sudo: true
+
+install:
+  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
+
+script:
+  - echo "==> Building the main Docker image..."
+  - ./run 'docker build -f test/Dockerfile-ubuntu14.04 -t img .  &&  docker run -i img > result-ubuntu14.04'
+  - ./run 'docker build -f test/Dockerfile-ubuntu12.04 -t img .  &&  docker run -i img > result-ubuntu12.04'
+  - ./run 'docker build -f test/Dockerfile-debian8     -t img .  &&  docker run -i img > result-debian8'
+  - ./run 'docker build -f test/Dockerfile-debian7     -t img .  &&  docker run -i img > result-debian7'
+  - ./run 'docker build -f test/Dockerfile-centos7     -t img .  &&  docker run -i img > result-centos7'
+  - ./run 'docker build -f test/Dockerfile-centos6     -t img .  &&  docker run -i img > result-centos6'
+
+  - echo "==> Validating the test results..."
+  - grep '^The Monit daemon.*uptime' result-ubuntu14.04  ||  exit 1
+  - grep '^The Monit daemon.*uptime' result-ubuntu12.04  ||  exit 1
+  - grep '^The Monit daemon.*uptime' result-debian8      ||  exit 1
+  - grep '^The Monit daemon.*uptime' result-debian7      ||  exit 1
+  - grep '^The Monit daemon.*uptime' result-centos7      ||  exit 1
+  - grep '^The Monit daemon.*uptime' result-centos6      ||  exit 1

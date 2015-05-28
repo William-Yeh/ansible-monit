@@ -1,0 +1,30 @@
+---
+# monit/meta/main.yml
+
+galaxy_info:
+    author: williamyeh
+    description: Install and configure monit
+    license: Apache
+
+    # for the `playbook_dir` bug:
+    # https://github.com/ansible/ansible/issues/8317
+    min_ansible_version: 1.7.1
+
+    platforms:
+        - name: Ubuntu
+          versions:
+              - precise
+              - trusty
+        - name: Debian
+          versions:
+              - jessie
+              - wheezy
+        - name: EL
+          versions:
+              - 6
+              - 7
+    categories:
+        - system
+        - monitoring
+
+dependencies: []

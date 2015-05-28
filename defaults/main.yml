@@ -1,0 +1,25 @@
+---
+
+#
+# variables needed to be defined in user's playbook
+#
+
+
+
+#
+# user-configurable defaults
+#
+
+monit_port:                 2812
+monit_interval_in_seconds:  60
+
+monit_install_path:      /usr/bin
+monit_config_path:       /etc/monit
+monit_db_path:           /var/lib/monit
+
+monit_download_path:     /tmp
+
+
+#---- the following vars are handled in tasks/set-role-variables.yml ------
+
+#monit_use_service:       True      # use "service" command to start/restart monit?
