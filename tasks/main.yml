@@ -13,14 +13,6 @@
   yum: name=libselinux-python state=present
   when: ansible_pkg_mgr == "yum"
 
-#- name: delegate to SELINUX handling subtask, if necessary
-#  include: set-selinux.yml
-#  when: nginx_in_selinux is defined and nginx_in_selinux == true
-
-
-
-
-
 
 - name: copy scripts to server
   copy: src="../files/{{ item }}"  dest="/tmp/"  mode="a+x"
