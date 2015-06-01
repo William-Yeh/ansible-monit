@@ -32,6 +32,14 @@
 
 
 
+- name: clean tarball, if necessary
+  file: path={{ item }}  state=absent
+  with_items:
+    - "{{ monit_download_path }}/{{ monit_tarball_file }}"
+    - "{{ monit_download_path }}/monit-{{ monit_version }}"
+  when: monit_clean_tarball
+
+
 
 - name: copy INIT script to server
   template: src="../templates/monit.sysvinit.debian.sh.j2"  dest="/etc/init.d/monit"  mode="a+x"

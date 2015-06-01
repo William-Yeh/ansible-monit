@@ -66,7 +66,7 @@ monit_interval_in_seconds:  60
 monit_install_path:      /usr/bin
 
 # directory for per-application configuration
-monit_config_path:       /etc/monit
+monit_config_path:       /etc/monit.d
 
 # directory for runtime database
 monit_db_path:           /var/lib/monit
@@ -75,6 +75,8 @@ monit_db_path:           /var/lib/monit
 # directory for temporary installation files
 monit_download_path:     /tmp
 
+# clean tarball when done?
+monit_clean_tarball:     true
 
 
 

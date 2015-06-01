@@ -14,10 +14,12 @@ monit_port:                 2812
 monit_interval_in_seconds:  60
 
 monit_install_path:      /usr/bin
-monit_config_path:       /etc/monit
+monit_config_path:       /etc/monit.d
 monit_db_path:           /var/lib/monit
 
 monit_download_path:     /tmp
+
+monit_clean_tarball:     true
 
 
 #---- the following vars are handled in tasks/set-role-variables.yml ------
