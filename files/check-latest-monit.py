@@ -11,7 +11,7 @@
 
 import sys
 import re
-import urllib
+import urllib2
 import ssl
 
 
@@ -23,17 +23,20 @@ monit_versions = []
 
 def enumerate_versions():
     global monit_versions
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'}
+    req = urllib2.Request(MONIT_DIST_LINK, None, headers)
 
     f = None
     try:
-        f = urllib.urlopen(MONIT_DIST_LINK)
+        f = urllib2.urlopen(req)
     except IOError:
         # ignore [SSL: CERTIFICATE_VERIFY_FAILED] error;
         # @see http://stackoverflow.com/a/28052583/714426
         context = ssl._create_unverified_context()
-        f = urllib.urlopen(MONIT_DIST_LINK, context=context)
+        f = urllib2.urlopen(req, context=context)
 
     content = f.read()
+    print content
     for line in content.splitlines():
         m = REGEX_MONIT_LIST.search(line)
         if m:
@@ -58,3 +61,4 @@ try:
         report_none()
 except IOError:
     report_none()
+
