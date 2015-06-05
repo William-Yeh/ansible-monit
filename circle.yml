@@ -1,0 +1,54 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker version
+
+    - cp test/Dockerfile-ubuntu14.04 Dockerfile
+    - docker build  -t monit_trusty   .
+
+    - cp test/Dockerfile-ubuntu12.04 Dockerfile
+    - docker build  -t monit_precise  .
+
+    - cp test/Dockerfile-debian8 Dockerfile
+    - docker build  -t monit_jessie   .
+
+    - cp test/Dockerfile-debian7 Dockerfile
+    - docker build  -t monit_wheezy   .
+
+    - cp test/Dockerfile-centos7 Dockerfile
+    - docker build  -t monit_centos7  .
+
+    - cp test/Dockerfile-centos6 Dockerfile
+    - docker build  -t monit_centos6  .
+
+test:
+  override:
+    - docker run -d -v $(pwd):/data --name c1 monit_trusty
+    - docker kill c1 ; sleep 10
+
+    - docker run -d -v $(pwd):/data --name c2 monit_precise
+    - docker kill c2 ; sleep 10
+
+    - docker run -d -v $(pwd):/data --name c3 monit_jessie
+    - docker kill c3 ; sleep 10
+
+    - docker run -d -v $(pwd):/data --name c4 monit_wheezy
+    - docker kill c4 ; sleep 10
+
+    - docker run -d -v $(pwd):/data --name c5 monit_centos7
+    - docker kill c5 ; sleep 10
+
+    - docker run -d -v $(pwd):/data --name c6 monit_centos6
+    - docker kill c6 ; sleep 10
+
+    - echo "==> Validating the test results..."
+    - grep '^The Monit daemon.*uptime' result-ubuntu14.04
+    - grep '^The Monit daemon.*uptime' result-ubuntu12.04
+    - grep '^The Monit daemon.*uptime' result-debian8
+    - grep '^The Monit daemon.*uptime' result-debian7
+    - grep '^The Monit daemon.*uptime' result-centos7
+    - grep '^The Monit daemon.*uptime' result-centos6
