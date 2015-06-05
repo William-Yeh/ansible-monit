@@ -36,7 +36,7 @@ def enumerate_versions():
         f = urllib2.urlopen(req, context=context)
 
     content = f.read()
-    print content
+    #print content
     for line in content.splitlines():
         m = REGEX_MONIT_LIST.search(line)
         if m:
@@ -61,4 +61,3 @@ try:
         report_none()
 except IOError:
     report_none()
-
