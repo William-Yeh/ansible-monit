@@ -38,6 +38,15 @@
 
 
 
+
+- name: install tar for some minimal OS configuration
+  yum: name=tar state=present
+  when: ansible_pkg_mgr == "yum"
+
+- name: install tar for some minimal OS configuration
+  apt: name=tar state=present
+  when: ansible_pkg_mgr == "apt"
+
 - name: uutar tarball
   unarchive:
     src: "{{ monit_download_path }}/{{ monit_tarball_file }}"
