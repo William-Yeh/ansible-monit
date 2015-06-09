@@ -15,7 +15,7 @@ import urllib2
 import ssl
 
 
-MONIT_DIST_LINK = "http://mmonit.com/monit/dist/binary/"
+MONIT_DIST_LINK = "https://mmonit.com/monit/dist/binary/"
 
 REGEX_MONIT_LIST = re.compile('\salt="\[DIR\]"></td><td><a href="([^"]+)/"')
 monit_versions = []
