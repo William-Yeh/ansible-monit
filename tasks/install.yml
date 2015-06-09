@@ -26,15 +26,15 @@
 
 - name: install curl
   yum: name=curl state=present
-  when: monit_tarball_downloaded.failed  and  ansible_pkg_mgr == "yum"
+  when: (monit_tarball_downloaded.failed | default(false))  and  ansible_pkg_mgr == "yum"
 
 - name: install curl
   apt: name=curl state=present
-  when: monit_tarball_downloaded.failed  and  ansible_pkg_mgr == "apt"
+  when: (monit_tarball_downloaded.failed | default(false))  and  ansible_pkg_mgr == "apt"
 
 - name: download tarball via curl
   command: curl -sSL -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36" -o "{{ monit_download_path }}/{{ monit_tarball_file }}" "https://mmonit.com/monit/dist/binary/{{ monit_version }}/{{ monit_tarball_file }}"
-  when: monit_tarball_downloaded.failed
+  when: (monit_tarball_downloaded.failed | default(false))
 
 
 
