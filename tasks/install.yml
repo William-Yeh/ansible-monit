@@ -38,20 +38,20 @@
 
 
 
-
-- name: install tar for some minimal OS configuration
-  yum: name=tar state=present
-  when: ansible_pkg_mgr == "yum"
-
-- name: install tar for some minimal OS configuration
-  apt: name=tar state=present
-  when: ansible_pkg_mgr == "apt"
-
 - name: uutar tarball
+  ignore_errors: yes
   unarchive:
     src: "{{ monit_download_path }}/{{ monit_tarball_file }}"
     dest: "{{ monit_download_path }}"
     copy: no
+  regiter: unarchive_result
+
+- name: untar tarball using external tar executable
+  command: tar zxvf "{{ monit_download_path }}/{{ monit_tarball_file }}"
+  args:
+    chdir: "{{ monit_download_path }}"
+  when: unarchive_result.failed
+
 
 - name: install executable
   command: cp  "{{ monit_download_path }}/monit-{{ monit_version }}/bin/monit"  "{{ monit_install_path }}/monit"
