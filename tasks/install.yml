@@ -19,24 +19,8 @@
 
 
 
-- name: download tarball via Ansible's get_url
-  get_url: url="https://mmonit.com/monit/dist/binary/{{ monit_version }}/{{ monit_tarball_file }}"  dest="{{ monit_download_path }}/"
-  ignore_errors: yes
-  register: monit_tarball_downloaded
-
-- name: install curl
-  yum: name=curl state=present
-  when: (monit_tarball_downloaded.failed | default(false))  and  ansible_pkg_mgr == "yum"
-
-- name: install curl
-  apt: name=curl state=present
-  when: (monit_tarball_downloaded.failed | default(false))  and  ansible_pkg_mgr == "apt"
-
-- name: download tarball via curl
-  command: curl -sSL -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36" -o "{{ monit_download_path }}/{{ monit_tarball_file }}" "https://mmonit.com/monit/dist/binary/{{ monit_version }}/{{ monit_tarball_file }}"
-  when: (monit_tarball_downloaded.failed | default(false))
-
-
+- name: download tarball
+  get_url: url="https://github.com/William-Yeh/ansible-monit-tarball/releases/download/{{ monit_version }}/{{ monit_tarball_file }}"  dest="{{ monit_download_path }}/"
 
 - name: uutar tarball
   ignore_errors: yes
@@ -44,13 +28,13 @@
     src: "{{ monit_download_path }}/{{ monit_tarball_file }}"
     dest: "{{ monit_download_path }}"
     copy: no
-  regiter: unarchive_result
+  register: unarchive_result
 
 - name: untar tarball using external tar executable
   command: tar zxvf "{{ monit_download_path }}/{{ monit_tarball_file }}"
   args:
     chdir: "{{ monit_download_path }}"
-  when: unarchive_result.failed
+  when: unarchive_result|failed
 
 
 - name: install executable

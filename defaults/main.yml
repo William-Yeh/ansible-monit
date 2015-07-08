@@ -10,6 +10,8 @@
 # user-configurable defaults
 #
 
+monit_version:              5.14
+
 monit_port:                 2812
 monit_interval_in_seconds:  60
 

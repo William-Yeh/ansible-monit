@@ -12,7 +12,7 @@ Role name in Ansible Galaxy: **[williamyeh.monit](https://galaxy.ansible.com/lis
 
 This Ansible role has the following features for Monit:
 
- - Install latest version.
+ - Install specific version.
  - Handlers for restart/reload/stop events;
  - Bare bone configuration (*real* configuration should be left to user's template files; see **Usage** section below).
 
@@ -53,6 +53,9 @@ User-configurable defaults:
 
 
 ```yaml
+# version
+monit_version:              5.14
+
 # HTTP port for status report
 monit_port:                 2812
 

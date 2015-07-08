@@ -17,21 +17,7 @@
 - name: copy scripts to server
   copy: src="../files/{{ item }}"  dest="/tmp/"  mode="a+x"
   with_items:
-    - check-latest-monit.py
     - check-monit.sh
-
-
-- name: query the latest version of official binary distribution
-  shell: LC_ALL="en_US.UTF-8"  /tmp/check-latest-monit.py
-  changed_when: false
-  register: monit_distribution
-
-- name: store the value of latest monit version
-  set_fact:
-    monit_version: "{{ (monit_distribution.stdout|from_json).version }}"
-  when: (monit_distribution.stdout|from_json).ok
-
-
 
 - name: check if specific version of monit has been installed
   shell: LC_ALL="en_US.UTF-8"  /tmp/check-monit.sh  {{ monit_version }}
