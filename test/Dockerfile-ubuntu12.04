@@ -24,5 +24,8 @@ RUN ansible-playbook-wrapper
 #
 
 VOLUME ["/data"]
+ENV    RESULT     /data/result-ubuntu12.04
 
-CMD  service monit start  &&  sleep 10  &&  /usr/bin/monit status > /data/result-ubuntu12.04
+CMD \
+    service monit start  &&  sleep 10  && \
+    /usr/bin/monit status  > $RESULT

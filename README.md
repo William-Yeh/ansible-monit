@@ -8,9 +8,9 @@ williamyeh.monit for Ansible Galaxy
 
 ## Summary
 
-Role name in Ansible Galaxy: **[williamyeh.monit](https://galaxy.ansible.com/list#/roles/3955)**
+Role name in Ansible Galaxy: **[williamyeh.monit](https://galaxy.ansible.com/williamyeh/monit/)**
 
-This Ansible role has the following features for Monit:
+This Ansible role has the following features for [Monit](https://mmonit.com/monit/) (a small Open Source utility for managing and monitoring Unix systems):
 
  - Install specific version.
  - Handlers for restart/reload/stop events;
@@ -54,7 +54,7 @@ User-configurable defaults:
 
 ```yaml
 # version
-monit_version:              5.14
+monit_version:              5.15
 
 # HTTP port for status report
 monit_port:                 2812

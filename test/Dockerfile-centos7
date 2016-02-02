@@ -5,7 +5,7 @@
 
 
 # pull base image
-FROM williamyeh/ansible:centos7-onbuild
+FROM williamyeh/ansible:master-centos7-onbuild
 
 MAINTAINER William Yeh <william.pjyeh@gmail.com>
 
@@ -27,6 +27,8 @@ RUN ansible-playbook-wrapper --extra-vars "monit_use_service=False" -vvv
 #
 
 VOLUME ["/data"]
+ENV    RESULT     /data/result-centos7
 
-CMD  /usr/bin/monit -c /etc/monitrc  &&  sleep 10  &&  /usr/bin/monit status > /data/result-centos7
-#CMD  service monit start  &&  sleep 10  &&  /usr/bin/monit status > /data/result-centos7
+CMD \
+    /usr/bin/monit -c /etc/monitrc  &&  sleep 10  && \
+    /usr/bin/monit status  > $RESULT

@@ -19,23 +19,11 @@
 
 
 
-- name: download tarball
-  get_url: url="https://github.com/William-Yeh/ansible-monit-tarball/releases/download/{{ monit_version }}/{{ monit_tarball_file }}"  dest="{{ monit_download_path }}/"
-
-- name: uutar tarball
-  ignore_errors: yes
+- name: download and uutar tarball
   unarchive:
-    src: "{{ monit_download_path }}/{{ monit_tarball_file }}"
+    src: "https://github.com/William-Yeh/ansible-monit-tarball/releases/download/{{ monit_version }}/{{ monit_tarball_file }}"
     dest: "{{ monit_download_path }}"
     copy: no
-  register: unarchive_result
-
-- name: untar tarball using external tar executable
-  command: tar zxvf "{{ monit_download_path }}/{{ monit_tarball_file }}"
-  args:
-    chdir: "{{ monit_download_path }}"
-  when: unarchive_result|failed
-
 
 - name: install executable
   command: cp  "{{ monit_download_path }}/monit-{{ monit_version }}/bin/monit"  "{{ monit_install_path }}/monit"
@@ -45,7 +33,6 @@
 - name: clean tarball, if necessary
   file: path={{ item }}  state=absent
   with_items:
-    - "{{ monit_download_path }}/{{ monit_tarball_file }}"
     - "{{ monit_download_path }}/monit-{{ monit_version }}"
   when: monit_clean_tarball
 

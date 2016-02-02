@@ -16,13 +16,12 @@ dependencies:
 
 test:
   override:
-    - docker run -d -v $(pwd):/data --name c1 monit_trusty
-    - docker run -d -v $(pwd):/data --name c2 monit_precise
-    - docker run -d -v $(pwd):/data --name c3 monit_jessie
-    - docker run -d -v $(pwd):/data --name c4 monit_wheezy
-    - docker run -d -v $(pwd):/data --name c5 monit_centos7
-    - docker run -d -v $(pwd):/data --name c6 monit_centos6
-    - sleep 30
+    - docker run  -v $(pwd):/data  monit_trusty
+    - docker run  -v $(pwd):/data  monit_precise
+    - docker run  -v $(pwd):/data  monit_jessie
+    - docker run  -v $(pwd):/data  monit_wheezy
+    - docker run  -v $(pwd):/data  monit_centos7
+    - docker run  -v $(pwd):/data  monit_centos6
 
     - echo "==> Validating the test results..."
     - grep '^The Monit daemon.*uptime' result-ubuntu14.04
