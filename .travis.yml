@@ -28,3 +28,6 @@ script:
     - grep '^The Monit daemon.*uptime' result-debian7
     - grep '^The Monit daemon.*uptime' result-centos7
     - grep '^The Monit daemon.*uptime' result-centos6
+
+notifications:
+    webhooks: https://galaxy.ansible.com/api/v1/notifications/

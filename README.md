@@ -53,8 +53,9 @@ User-configurable defaults:
 
 
 ```yaml
-# version
-monit_version:              5.15
+# version;
+# supported versions: 5.17.1, 5.15, 5.14
+monit_version:              5.17.1
 
 # HTTP port for status report
 monit_port:                 2812
