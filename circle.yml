@@ -7,6 +7,7 @@ dependencies:
     - docker info
     - docker version
 
+    - docker build  -f test/Dockerfile-ubuntu16.04  -t monit_xenial   .
     - docker build  -f test/Dockerfile-ubuntu14.04  -t monit_trusty   .
     - docker build  -f test/Dockerfile-ubuntu12.04  -t monit_precise  .
     - docker build  -f test/Dockerfile-debian8      -t monit_jessie   .
@@ -16,6 +17,7 @@ dependencies:
 
 test:
   override:
+    - docker run  -v $(pwd):/data  monit_xenial
     - docker run  -v $(pwd):/data  monit_trusty
     - docker run  -v $(pwd):/data  monit_precise
     - docker run  -v $(pwd):/data  monit_jessie
@@ -24,9 +26,10 @@ test:
     - docker run  -v $(pwd):/data  monit_centos6
 
     - echo "==> Validating the test results..."
-    - grep '^The Monit daemon.*uptime' result-ubuntu14.04
-    - grep '^The Monit daemon.*uptime' result-ubuntu12.04
-    - grep '^The Monit daemon.*uptime' result-debian8
-    - grep '^The Monit daemon.*uptime' result-debian7
-    - grep '^The Monit daemon.*uptime' result-centos7
-    - grep '^The Monit daemon.*uptime' result-centos6
+    - grep 'Monit .*uptime:' result-ubuntu16.04
+    - grep 'Monit .*uptime:' result-ubuntu14.04
+    - grep 'Monit .*uptime:' result-ubuntu12.04
+    - grep 'Monit .*uptime:' result-debian8
+    - grep 'Monit .*uptime:' result-debian7
+    - grep 'Monit .*uptime:' result-centos7
+    - grep 'Monit .*uptime:' result-centos6
